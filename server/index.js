@@ -16,12 +16,13 @@ const app = express();
 
 connectDB();
 
-app.use(
-  cors({
-    origin: 'http://localhost:5173',
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://hrms-app.vercel.app'  // we'll update this after Vercel deploy
+  ],
+  credentials: true
+}))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
