@@ -1,3 +1,11 @@
+/*
+  GMAIL SETUP:
+  1. Go to Google Account -> Security
+  2. Enable 2-Step Verification
+  3. Search "App Passwords" -> Generate one for "Mail"
+  4. Use that 16-character password as EMAIL_PASS in .env
+  5. Use your Gmail address as EMAIL_USER
+*/
 const nodemailer = require('nodemailer');
 
 const port = Number(process.env.EMAIL_PORT) || 587;
@@ -111,7 +119,51 @@ const sendInterviewReminder = async (candidate, interview, job) => {
   }
 };
 
+const sendPasswordResetEmail = async (email, resetURL) => {
+  const subject = 'Reset your HR ATS password';
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1f2937;">
+      <h2 style="color: #4f46e5; margin-bottom: 16px;">Password reset request</h2>
+      <p style="margin: 0 0 12px;">We received a request to reset your ${companyName()} password.</p>
+      <p style="margin: 0 0 16px;">Click the button below to set a new password:</p>
+      <a href="${resetURL}" style="display: inline-block; background: #4f46e5; color: #ffffff; text-decoration: none; padding: 10px 16px; border-radius: 8px; font-weight: 600;">
+        Reset Password
+      </a>
+      <p style="margin: 16px 0 0; color: #4b5563;">This link expires in 1 hour.</p>
+      <p style="margin: 12px 0 0; color: #4b5563;">If you did not request this, you can safely ignore this email.</p>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject,
+    html,
+  });
+};
+
+const sendPasswordResetSuccess = async (email, name) => {
+  const subject = 'Your HR ATS password was reset';
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1f2937;">
+      <h2 style="color: #4f46e5; margin-bottom: 16px;">Password updated</h2>
+      <p style="margin: 0 0 12px;">Hi ${name || 'there'},</p>
+      <p style="margin: 0 0 12px;">Your ${companyName()} password has been reset successfully.</p>
+      <p style="margin: 0;">If this was not you, please contact support immediately.</p>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject,
+    html,
+  });
+};
+
 module.exports = {
   sendInterviewInvite,
   sendInterviewReminder,
+  sendPasswordResetEmail,
+  sendPasswordResetSuccess,
 };

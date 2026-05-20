@@ -4,6 +4,9 @@ import RoleRoute from './components/RoleRoute'
 import AppLayout from './components/Layout/AppLayout'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import AuthCallback from './pages/AuthCallback'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import Dashboard from './pages/Dashboard'
 import Analytics from './pages/Analytics'
 import JobList from './pages/Jobs/JobList'
@@ -21,6 +24,9 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
       <Route path="/careers" element={<JobBoard />} />
       <Route path="/careers/:id/apply" element={<ApplyForm />} />
 

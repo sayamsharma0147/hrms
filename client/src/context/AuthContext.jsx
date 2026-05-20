@@ -61,9 +61,15 @@ export function AuthProvider({ children }) {
     return data
   }
 
+  const setAuthSession = useCallback((nextToken, nextUser) => {
+    localStorage.setItem('token', nextToken)
+    setToken(nextToken)
+    setUser(nextUser)
+  }, [])
+
   return (
     <AuthContext.Provider
-      value={{ user, token, loading, login, register, logout }}
+      value={{ user, token, loading, login, register, logout, setAuthSession }}
     >
       {children}
     </AuthContext.Provider>
