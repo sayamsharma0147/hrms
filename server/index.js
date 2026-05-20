@@ -18,13 +18,17 @@ const app = express();
 
 connectDB();
 
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://hrms-tau-woad.vercel.app/'
-  ],
-  credentials: true
+// Session and passport MUST be before routes
+app.use(session({ 
+  secret: process.env.SESSION_SECRET, 
+  resave: false, 
+  saveUninitialized: false 
 }))
+app.use(passport.initialize())
+app.use(passport.session())
+
+// Routes
+app.use('/api/auth', authRoutes)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(

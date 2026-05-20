@@ -34,7 +34,7 @@ export default function Login() {
   }
 
   const handleGoogleSignIn = () => {
-    window.location.href = `${serverUrl}/api/auth/google`
+    window.location.href = `${import.meta.env.VITE_SERVER_URL}/api/auth/google`
   }
 
   return (
