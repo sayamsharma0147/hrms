@@ -18,29 +18,25 @@ const app = express();
 
 connectDB();
 
-// Session and passport MUST be before routes
-app.use(session({ 
-  secret: process.env.SESSION_SECRET, 
-  resave: false, 
-  saveUninitialized: false 
-}))
-app.use(passport.initialize())
-app.use(passport.session())
-
-// Routes
-app.use('/api/auth', authRoutes)
+// Middleware - ORDER MATTERS
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://hrms-tau-woad.vercel.app'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Routes
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: Date.now() });
 });
