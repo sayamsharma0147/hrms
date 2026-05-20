@@ -19,7 +19,7 @@ connectDB();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://hrms-app.vercel.app'  // we'll update this after Vercel deploy
+    'https://hrms-tau-woad.vercel.app/'
   ],
   credentials: true
 }))
